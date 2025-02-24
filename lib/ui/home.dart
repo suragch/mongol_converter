@@ -94,7 +94,9 @@ class _HomePageState extends State<HomePage> {
                   return ListTile(
                     leading: Icon(Icons.add),
                     title: Text(manager.unknownWords[index]),
-                    onTap: () {},
+                    onTap: () {
+                      _showAddWordDialog(manager.unknownWords[index]);
+                    },
                   );
                 },
               ),
@@ -202,6 +204,63 @@ class _HomePageState extends State<HomePage> {
                 setState(() {});
               },
               child: Text('Login'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAddWordDialog(String word) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        final wordController = TextEditingController();
+        return AlertDialog(
+          content: SizedBox(
+            height: 200,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    SizedBox(height: 8, width: 48),
+                    MongolText('', style: TextStyle(fontSize: 30)),
+                  ],
+                ),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(word, style: TextStyle(fontSize: 30)),
+                      SizedBox(height: 8),
+                      TextField(
+                        autofocus: true,
+                        controller: wordController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                //await manager.addWord(wordController.text);
+                setState(() {});
+              },
+              child: Text('Add'),
             ),
           ],
         );
