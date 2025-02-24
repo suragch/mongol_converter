@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:mongol_converter_db_creator/infrastructure/user_settings.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -5,6 +6,8 @@ import 'package:pocketbase/pocketbase.dart';
 import '../infrastructure/converter.dart';
 
 class HomeManager {
+  final addMongolNotifier = ValueNotifier<String>('');
+
   String convertedText = '';
   List<String> unknownWords = [];
   final converter = Converter();
@@ -19,6 +22,10 @@ class HomeManager {
     final (converted, words) = converter.convert(text);
     convertedText = converted;
     unknownWords = words;
+  }
+
+  String convertLatin(String latin) {
+    return converter.convertLatinToMongolUnicode(latin);
   }
 
   Future<void> login(String username, String password) async {
