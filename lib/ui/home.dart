@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           if (!manager.isLoggedIn)
             TextButton(
               onPressed: _showLoginDialog, //
-              child: Text('Login'),
+              child: Text('Нэвтрэх'),
             ),
           if (manager.isLoggedIn)
             TextButton(
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                 manager.logout();
                 setState(() {});
               },
-              child: Text('Logout'),
+              child: Text('Гарах'),
             ),
         ],
       ),
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                       expands: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: 'Cyrillic',
+                        hintText: 'Кирилл',
                       ),
                     ),
                   ),
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(height: 8),
-            Text('Unknown words:'),
+            Text('Үл мэдэгдэх үгс:'),
             Expanded(
               child: ListView.builder(
                 itemCount: manager.unknownWords.length,
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                 _appState = HomeState.converted;
               });
             },
-            child: const Text('Convert'),
+            child: const Text('Хөрвүүлэх'),
           ),
         );
       case HomeState.loading:

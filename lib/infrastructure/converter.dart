@@ -44,7 +44,7 @@ class Converter {
   }
 
   String? _convertWord(String word) {
-    if (word == 'Монгол') {
+    if (word == 'монгол') {
       return 'ᠮᠣᠩᠭᠣᠯ';
     } else {
       return null;
