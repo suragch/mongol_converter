@@ -50,7 +50,10 @@ class _AddWordDialogState extends State<AddWordDialog> {
             Column(
               children: [
                 SizedBox(height: 8, width: 48),
-                MongolText(mongolText, style: TextStyle(fontSize: 30)),
+                MongolText(
+                  mongolText,
+                  style: TextStyle(fontSize: 30, fontFamily: 'MenksoftQagaan'),
+                ),
               ],
             ),
             SizedBox(width: 8),

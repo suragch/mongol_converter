@@ -55,7 +55,12 @@ class Converter {
     }
   }
 
-  String convertLatinToMongolUnicode(String latinText) {
+  String convertLatinToMenksoftCode(String latinText) {
+    final unicode = _convertLatinToMongolianUnicode(latinText);
+    return mongolCode.unicodeToMenksoft(unicode);
+  }
+
+  String _convertLatinToMongolianUnicode(String latinText) {
     final converted = StringBuffer();
     for (var i = 0; i < latinText.length; i++) {
       final char = latinText[i];

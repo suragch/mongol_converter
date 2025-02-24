@@ -25,7 +25,7 @@ class HomeManager {
   }
 
   String convertLatin(String latin) {
-    return converter.convertLatinToMongolUnicode(latin);
+    return converter.convertLatinToMenksoftCode(latin);
   }
 
   Future<void> login(String username, String password) async {

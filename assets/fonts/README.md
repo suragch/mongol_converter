@@ -1,0 +1,1 @@
+MQG8F02.ttf is a Menksoft font and retains Menksoft's copyright.
