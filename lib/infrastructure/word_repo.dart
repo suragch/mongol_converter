@@ -5,14 +5,14 @@ class WordRepo {
   // final pb = PocketBase('http://127.0.0.1:8090/');
   final pb = getIt<PocketBase>();
   // final _words = <Word>{};
-  final _words = <String, String>{};
+  final words = <String, String>{};
 
   Future<void> fetchWords() async {
     final records = await pb
         .collection('words')
         .getFullList(fields: 'cyrillic,mongol');
     for (final record in records) {
-      _words[record.data['cyrillic']] = record.data['mongol'];
+      words[record.data['cyrillic']] = record.data['mongol'];
       // _words.add(
       //   Word(
       //     cyrillic: record.data['cyrillic'] as String,
@@ -31,7 +31,7 @@ class WordRepo {
     };
     try {
       await pb.collection('words').create(body: body);
-      _words[cyrillic] = mongol;
+      words[cyrillic] = mongol;
       return true;
     } catch (e) {
       print('$e');
@@ -40,23 +40,23 @@ class WordRepo {
   }
 
   String? menksoftForCyrillic(String cyrillic) {
-    return _words[cyrillic];
+    return words[cyrillic];
   }
 }
 
-class Word {
-  Word({required this.cyrillic, required this.mongol});
-  final String cyrillic;
-  final String mongol;
+// class Word {
+//   Word({required this.cyrillic, required this.mongol});
+//   final String cyrillic;
+//   final String mongol;
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is Word &&
-        other.cyrillic == cyrillic &&
-        other.mongol == mongol;
-  }
+//   @override
+//   bool operator ==(Object other) {
+//     if (identical(this, other)) return true;
+//     return other is Word &&
+//         other.cyrillic == cyrillic &&
+//         other.mongol == mongol;
+//   }
 
-  @override
-  int get hashCode => cyrillic.hashCode ^ mongol.hashCode;
-}
+//   @override
+//   int get hashCode => cyrillic.hashCode ^ mongol.hashCode;
+// }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
+import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
 
 class WordBrowserPage extends StatefulWidget {
   const WordBrowserPage({super.key});
@@ -8,34 +10,37 @@ class WordBrowserPage extends StatefulWidget {
 }
 
 class _WordBrowserPageState extends State<WordBrowserPage> {
-  List<Map<String, dynamic>> _words = [];
-  List<Map<String, dynamic>> _filteredWords = [];
+  late final List<String> _keys;
+  // Map<String, String> _filteredWords = {};
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
+  final wordRepo = getIt<WordRepo>();
 
   @override
   void initState() {
     super.initState();
+    _keys = wordRepo.words.keys.toList();
+    print('_keys: $_keys');
   }
 
   void _filterWords(String query) {
-    setState(() {
-      if (query.isEmpty) {
-        _filteredWords = _words;
-      } else {
-        _filteredWords =
-            _words
-                .where(
-                  (word) => word['cyrillic'].toString().startsWith(
-                    query.toLowerCase(),
-                  ),
-                )
-                .toList();
-      }
-    });
+    // setState(() {
+    //   if (query.isEmpty) {
+    //     _filteredWords = _words;
+    //   } else {
+    //     _filteredWords =
+    //         _words
+    //             .where(
+    //               (word) => word['cyrillic'].toString().startsWith(
+    //                 query.toLowerCase(),
+    //               ),
+    //             )
+    //             .toList();
+    //   }
+    // });
   }
 
-  void _editWord(Map<String, dynamic> word) async {
+  void _editWord(String cyrillic) async {
     // Navigate to edit page and refresh list when returning
     // final result = await Navigator.push(
     //   context,
@@ -83,29 +88,33 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
         ],
       ),
       body:
-          _filteredWords.isEmpty
+          wordRepo.words.isEmpty
               ? const Center(child: Text('No words found'))
               : ListView.builder(
-                itemCount: _filteredWords.length,
+                itemCount: _keys.length,
                 itemBuilder: (context, index) {
-                  final word = _filteredWords[index];
+                  final cyrillic = _keys[index];
+                  final mongol = wordRepo.words[cyrillic] ?? '';
                   return Card(
                     margin: const EdgeInsets.all(8.0),
                     child: ListTile(
                       title: Text(
-                        word['cyrillic'] ?? '',
+                        cyrillic,
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          // fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
                       subtitle: Text(
-                        word['mongol'] ?? '',
-                        style: const TextStyle(fontSize: 16),
+                        mongol,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'MenksoftQagaan',
+                        ),
                       ),
                       trailing: IconButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: () => _editWord(word),
+                        onPressed: () => _editWord(cyrillic),
                       ),
                     ),
                   );
