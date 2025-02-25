@@ -41,54 +41,65 @@ class _AddWordDialogState extends State<AddWordDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      content: SizedBox(
-        height: 200,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                SizedBox(height: 8, width: 48),
-                MongolText(
-                  mongolText,
-                  style: TextStyle(fontSize: 30, fontFamily: 'MenksoftQagaan'),
-                ),
-              ],
-            ),
-            SizedBox(width: 8),
-            Expanded(
-              child: Column(
+    return Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.word, style: TextStyle(fontSize: 30)),
-                  SizedBox(height: 8),
-                  TextField(
-                    autofocus: true,
-                    controller: wordController,
-                    decoration: InputDecoration(border: OutlineInputBorder()),
+                  SizedBox(height: 8, width: 48),
+                  MongolText(
+                    mongolText,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontFamily: 'MenksoftQagaan',
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+              SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(widget.word, style: TextStyle(fontSize: 30)),
+                    SizedBox(height: 8),
+                    TextField(
+                      autofocus: true,
+                      controller: wordController,
+                      decoration: InputDecoration(border: OutlineInputBorder()),
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            Navigator.pop(context);
+                            //await manager.addWord(wordController.text);
+                            widget.onWordAdded();
+                          },
+                          child: Text('Add'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () async {
-            Navigator.pop(context);
-            //await manager.addWord(wordController.text);
-            widget.onWordAdded();
-          },
-          child: Text('Add'),
-        ),
-      ],
     );
   }
 }
