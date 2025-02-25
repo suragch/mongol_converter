@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:mongol_converter_db_creator/infrastructure/user_settings.dart';
 
-import 'ui/home.dart';
+import 'ui/home/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

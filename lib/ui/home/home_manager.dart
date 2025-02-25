@@ -3,7 +3,7 @@ import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart'
 import 'package:mongol_converter_db_creator/infrastructure/user_settings.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import '../infrastructure/converter.dart';
+import '../../infrastructure/converter.dart';
 
 class HomeManager {
   final addMongolNotifier = ValueNotifier<String>('');

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mongol/mongol.dart';
-import 'package:mongol_converter_db_creator/ui/home_manager.dart';
+import 'package:mongol_converter_db_creator/ui/home/home_manager.dart';
 
 class AddWordDialog extends StatefulWidget {
   final String word;

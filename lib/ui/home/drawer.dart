@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mongol_converter_db_creator/ui/about.dart';
-import 'package:mongol_converter_db_creator/ui/browser.dart';
+import 'package:mongol_converter_db_creator/ui/about/about.dart';
+import 'package:mongol_converter_db_creator/ui/browser/browser.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
