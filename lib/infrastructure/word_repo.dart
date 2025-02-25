@@ -1,7 +1,9 @@
+import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class WordRepo {
-  final pb = PocketBase('http://127.0.0.1:8090/');
+  // final pb = PocketBase('http://127.0.0.1:8090/');
+  final pb = getIt<PocketBase>();
   // final _words = <Word>{};
   final _words = <String, String>{};
 
@@ -18,6 +20,7 @@ class WordRepo {
       //   ),
       // );
     }
+    print('Fetched ${records.length} words');
   }
 
   Future<bool> addWord(String cyrillic, String mongol) async {
@@ -28,6 +31,7 @@ class WordRepo {
     };
     try {
       await pb.collection('words').create(body: body);
+      _words[cyrillic] = mongol;
       return true;
     } catch (e) {
       print('$e');

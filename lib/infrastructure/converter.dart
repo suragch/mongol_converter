@@ -5,6 +5,7 @@ import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
 class Converter {
   final mongolCode = MongolCode.instance;
   final wordRepo = getIt<WordRepo>();
+  static const nnbs = '\uE263';
 
   (String converted, List<String> unknownWords) convert(String text) {
     final converted = StringBuffer();
@@ -22,7 +23,6 @@ class Converter {
         _processWord(currentWord.toString(), converted, unknownWords);
         currentWord.clear();
         _processWord(char, converted, unknownWords);
-        converted.write(' ');
       } else {
         currentWord.write(char);
       }
@@ -32,7 +32,11 @@ class Converter {
       _processWord(currentWord.toString(), converted, unknownWords);
     }
 
-    return (converted.toString().trimRight(), unknownWords.toList());
+    var returnValue = converted.toString().trimRight();
+    returnValue = returnValue.replaceAll(' $nnbs', nnbs);
+    print(returnValue);
+
+    return (returnValue, unknownWords.toList());
   }
 
   void _processWord(
@@ -52,11 +56,6 @@ class Converter {
 
   String? _convertWord(String word) {
     return wordRepo.menksoftForCyrillic(word);
-    // if (word == 'монгол') {
-    //   return 'ᠮᠣᠩᠭᠣᠯ';
-    // } else {
-    //   return null;
-    // }
   }
 
   String convertLatinToMenksoftCode(String latinText) {

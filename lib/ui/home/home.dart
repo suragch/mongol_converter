@@ -175,7 +175,10 @@ class _HomePageState extends State<HomePage> {
               color: Colors.blue.shade50,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: MongolText(manager.convertedText),
+                child: MongolText(
+                  manager.convertedText,
+                  style: TextStyle(fontFamily: 'MenksoftQagaan', fontSize: 20),
+                ),
               ),
             ),
             Positioned(

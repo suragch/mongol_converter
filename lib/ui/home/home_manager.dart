@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
-
 import 'package:flutter/widgets.dart';
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:mongol_converter_db_creator/infrastructure/user_settings.dart';
