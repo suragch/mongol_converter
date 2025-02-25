@@ -6,7 +6,7 @@ import 'package:mongol_converter_db_creator/ui/home/drawer.dart';
 
 import 'home_manager.dart';
 
-enum HomeState { initial, ready, loading, converted }
+enum HomeState { initial, ready, loading, loaded, converted }
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
       _oldText = text;
     });
     manager.onWordAdded = _onWordAdded;
+    _loadWords();
   }
 
   void _onWordAdded(String message) {
@@ -50,6 +51,14 @@ class _HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), duration: const Duration(seconds: 1)),
     );
+  }
+
+  Future<void> _loadWords() async {
+    _appState = HomeState.loading;
+    setState(() {});
+    await manager.loadWords();
+    _appState = HomeState.loaded;
+    setState(() {});
   }
 
   @override
@@ -140,6 +149,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildRightPanel() {
     switch (_appState) {
       case HomeState.initial:
+      case HomeState.loaded:
         return const SizedBox();
       case HomeState.ready:
         return Center(
@@ -155,6 +165,7 @@ class _HomePageState extends State<HomePage> {
         );
       case HomeState.loading:
         return CircularProgressIndicator();
+
       case HomeState.converted:
         return Stack(
           children: [

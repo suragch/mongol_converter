@@ -1,7 +1,10 @@
 import 'package:mongol_code/mongol_code.dart';
+import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
+import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
 
 class Converter {
   final mongolCode = MongolCode.instance;
+  final wordRepo = getIt<WordRepo>();
 
   (String converted, List<String> unknownWords) convert(String text) {
     final converted = StringBuffer();
@@ -48,11 +51,12 @@ class Converter {
   }
 
   String? _convertWord(String word) {
-    if (word == 'монгол') {
-      return 'ᠮᠣᠩᠭᠣᠯ';
-    } else {
-      return null;
-    }
+    return wordRepo.menksoftForCyrillic(word);
+    // if (word == 'монгол') {
+    //   return 'ᠮᠣᠩᠭᠣᠯ';
+    // } else {
+    //   return null;
+    // }
   }
 
   String convertLatinToMenksoftCode(String latinText) {
