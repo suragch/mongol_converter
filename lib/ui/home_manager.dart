@@ -49,10 +49,10 @@ class HomeManager {
     };
     try {
       await pb.collection('words').create(body: body);
-      onWordAdded?.call('$cyrillic added successfully');
+      onWordAdded?.call('$cyrillic амжилттай нэмэгдлээ');
     } catch (e) {
       print(e);
-      onWordAdded?.call('Error adding word');
+      onWordAdded?.call('Үг нэмэхэд алдаа гарлаа');
     }
   }
 }

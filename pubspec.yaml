@@ -2,7 +2,7 @@ name: mongol_converter_db_creator
 description: "A new Flutter project."
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 0.1.0+1
 
 environment:
   sdk: ^3.7.0
@@ -16,6 +16,7 @@ dependencies:
   pocketbase: ^0.22.0
   shared_preferences: ^2.5.2
   get_it: ^8.0.3
+  package_info_plus: ^8.2.1
 
 dev_dependencies:
   flutter_test:
