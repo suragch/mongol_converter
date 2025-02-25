@@ -36,6 +36,19 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
       _oldText = text;
     });
+    manager.onWordAdded = _onWordAdded;
+  }
+
+  void _onWordAdded(String message) {
+    setState(() {});
+    _showSnackBar(message);
+  }
+
+  void _showSnackBar(String message) {
+    print('message $message');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), duration: const Duration(seconds: 1)),
+    );
   }
 
   @override
@@ -92,6 +105,13 @@ class _HomePageState extends State<HomePage> {
               child: ListView.builder(
                 itemCount: manager.unknownWords.length,
                 itemBuilder: (context, index) {
+                  final word = manager.unknownWords[index];
+                  if (!manager.isLoggedIn) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(word),
+                    );
+                  }
                   return ListTile(
                     leading: Icon(Icons.add),
                     title: Text(manager.unknownWords[index]),
@@ -101,9 +121,6 @@ class _HomePageState extends State<HomePage> {
                         builder:
                             (context) => AddWordDialog(
                               word: manager.unknownWords[index],
-                              onWordAdded: () {
-                                setState(() {});
-                              },
                               manager: manager,
                             ),
                       );

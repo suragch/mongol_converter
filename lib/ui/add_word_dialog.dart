@@ -4,15 +4,9 @@ import 'package:mongol_converter_db_creator/ui/home_manager.dart';
 
 class AddWordDialog extends StatefulWidget {
   final String word;
-  final VoidCallback onWordAdded;
   final HomeManager manager;
 
-  const AddWordDialog({
-    super.key,
-    required this.word,
-    required this.onWordAdded,
-    required this.manager,
-  });
+  const AddWordDialog({super.key, required this.word, required this.manager});
 
   @override
   State<AddWordDialog> createState() => _AddWordDialogState();
@@ -81,15 +75,17 @@ class _AddWordDialogState extends State<AddWordDialog> {
                       children: [
                         TextButton(
                           onPressed: () => Navigator.pop(context),
-                          child: Text('Cancel'),
+                          child: Text('Цуцлах'),
                         ),
                         TextButton(
                           onPressed: () async {
                             Navigator.pop(context);
-                            //await manager.addWord(wordController.text);
-                            widget.onWordAdded();
+                            await widget.manager.addWord(
+                              cyrillic: widget.word,
+                              mongol: mongolText,
+                            );
                           },
-                          child: Text('Add'),
+                          child: Text('Нэмэх'),
                         ),
                       ],
                     ),

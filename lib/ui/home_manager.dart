@@ -7,6 +7,7 @@ import '../infrastructure/converter.dart';
 
 class HomeManager {
   final addMongolNotifier = ValueNotifier<String>('');
+  void Function(String)? onWordAdded;
 
   String convertedText = '';
   List<String> unknownWords = [];
@@ -35,5 +36,23 @@ class HomeManager {
 
   Future<void> logout() async {
     pb.authStore.clear();
+  }
+
+  Future<void> addWord({
+    required String cyrillic,
+    required String mongol,
+  }) async {
+    final body = <String, dynamic>{
+      "user": pb.authStore.record!.id,
+      "cyrillic": cyrillic,
+      "mongol": mongol,
+    };
+    try {
+      await pb.collection('words').create(body: body);
+      onWordAdded?.call('$cyrillic added successfully');
+    } catch (e) {
+      print(e);
+      onWordAdded?.call('Error adding word');
+    }
   }
 }
