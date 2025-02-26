@@ -130,9 +130,9 @@ class _HomePageState extends State<HomePage> {
                       showDialog(
                         context: context,
                         builder:
-                            (context) => AddWordDialog(
+                            (context) => AddEditWordDialog(
                               cyrillic: manager.unknownWords[index],
-                              onAddWord: (word) async {
+                              onAddEditWord: (word) async {
                                 await manager.addWord(
                                   cyrillic: word.cyrillic,
                                   mongol: word.mongol,

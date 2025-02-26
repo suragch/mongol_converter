@@ -35,6 +35,37 @@ class WordRepo {
   String? menksoftForCyrillic(String cyrillic) {
     return words[cyrillic];
   }
+
+  Future<bool> updateWord(Word word) async {
+    print('updateWord: ${word.cyrillic}, ${word.mongol}');
+    try {
+      final record = await pb
+          .collection('words')
+          .getFirstListItem('cyrillic="${word.cyrillic}"');
+      // .update(record.id, body: {'cyrillic': word.cyrillic, 'mongol': word.mongol});
+      print('record: $record');
+
+      final body = <String, dynamic>{
+        "user": pb.authStore.record!.id,
+        "cyrillic": word.cyrillic,
+        "mongol": word.mongol,
+      };
+
+      await pb.collection('words').update(record.id, body: body);
+
+      // await pb
+      //     .collection('words')
+      //     .update(
+      //       record.id,
+      //       body: {'cyrillic': word.cyrillic, 'mongol': word.mongol},
+      //     );
+      words[word.cyrillic] = word.mongol;
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
 }
 
 class Word {

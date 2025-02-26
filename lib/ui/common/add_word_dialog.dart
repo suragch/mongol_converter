@@ -4,36 +4,34 @@ import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
 
-class AddWordDialog extends StatefulWidget {
-  const AddWordDialog({
+class AddEditWordDialog extends StatefulWidget {
+  const AddEditWordDialog({
     super.key,
-    required this.onAddWord,
+    required this.onAddEditWord,
     required this.cyrillic,
-    this.mongol,
+    this.latin,
   });
 
-  final void Function(Word) onAddWord;
+  final void Function(Word) onAddEditWord;
   final String cyrillic;
-  final String? mongol;
+  final String? latin;
 
   @override
-  State<AddWordDialog> createState() => _AddWordDialogState();
+  State<AddEditWordDialog> createState() => _AddEditWordDialogState();
 }
 
-class _AddWordDialogState extends State<AddWordDialog> {
-  final wordController = TextEditingController();
-  late String mongolText = widget.mongol ?? '';
+class _AddEditWordDialogState extends State<AddEditWordDialog> {
+  late final TextEditingController wordController;
+  String mongolText = '';
   final converter = getIt<Converter>();
 
   @override
   void initState() {
     super.initState();
+    wordController = TextEditingController(text: widget.latin);
     wordController.addListener(_updateMongolText);
-    // if (widget.mongol != null) {
-    //   mongolText = widget.mongol!;
-    //   setState(() {});
-    // }
-    print('mongol $mongolText');
+    // wordController.text = widget.latin ?? '';
+    print('initState: ${widget.latin}');
   }
 
   void _updateMongolText() {
@@ -94,7 +92,7 @@ class _AddWordDialogState extends State<AddWordDialog> {
                         TextButton(
                           onPressed: () async {
                             Navigator.pop(context);
-                            widget.onAddWord(
+                            widget.onAddEditWord(
                               Word(
                                 cyrillic: widget.cyrillic,
                                 mongol: mongolText,

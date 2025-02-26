@@ -45,15 +45,17 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
   }
 
   void _editWord(String cyrillic, String mongol, String latin) async {
-    print('edit $cyrillic');
     showDialog(
       context: context,
       builder:
-          (context) => AddWordDialog(
+          (context) => AddEditWordDialog(
             cyrillic: cyrillic,
-            mongol: mongol,
-            onAddWord: (word) {
-              // TODO
+            latin: latin,
+            onAddEditWord: (word) async {
+              final success = await wordRepo.updateWord(word);
+              if (success) {
+                setState(() {});
+              }
             },
           ),
     );
