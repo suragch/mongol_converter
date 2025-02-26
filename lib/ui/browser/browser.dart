@@ -14,7 +14,7 @@ class WordBrowserPage extends StatefulWidget {
 }
 
 class _WordBrowserPageState extends State<WordBrowserPage> {
-  late final List<String> _keys;
+  List<String>? _keys;
   // Map<String, String> _filteredWords = {};
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
@@ -44,7 +44,7 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
     // });
   }
 
-  void _editWord(String cyrillic, String mongol, String latin) async {
+  void _editWord(String cyrillic, String latin) async {
     showDialog(
       context: context,
       builder:
@@ -57,6 +57,34 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
                 setState(() {});
               }
             },
+          ),
+    );
+  }
+
+  void _deleteWord(String cyrillic) async {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Delete Word'),
+            content: Text('Are you sure you want to delete $cyrillic?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  final success = await wordRepo.deleteWord(cyrillic);
+                  if (success) {
+                    _keys = wordRepo.words.keys.toList();
+                    setState(() {});
+                  }
+                },
+                child: const Text('Delete'),
+              ),
+            ],
           ),
     );
   }
@@ -118,18 +146,19 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
     if (wordRepo.words.isEmpty) {
       return const Center(child: Text('No words found'));
     }
+    final length = _keys?.length ?? 0;
     return ListView.builder(
-      itemCount: _keys.length + 1,
+      itemCount: length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
           return Center(
             child: Text(
-              '${_keys.length} entries',
+              '$length entries',
               style: TextStyle(color: Colors.grey),
             ),
           );
         }
-        final cyrillic = _keys[index - 1];
+        final cyrillic = _keys![index - 1];
         final mongol = wordRepo.words[cyrillic] ?? '';
         final latin = converter.menksoftToLatin(mongol);
         return Row(
@@ -149,12 +178,12 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
             IconButton(
               tooltip: 'Edit',
               icon: const Icon(Icons.edit),
-              onPressed: () => _editWord(cyrillic, mongol, latin),
+              onPressed: () => _editWord(cyrillic, latin),
             ),
             IconButton(
               tooltip: 'Delete',
               icon: const Icon(Icons.delete),
-              onPressed: () => _editWord(cyrillic, mongol, latin),
+              onPressed: () => _deleteWord(cyrillic),
             ),
             SizedBox(width: 16),
           ],

@@ -66,6 +66,20 @@ class WordRepo {
       return false;
     }
   }
+
+  Future<bool> deleteWord(String cyrillic) async {
+    try {
+      final record = await pb
+          .collection('words')
+          .getFirstListItem('cyrillic="$cyrillic"');
+      await pb.collection('words').delete(record.id);
+      words.remove(cyrillic);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
 }
 
 class Word {
