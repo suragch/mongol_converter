@@ -10,7 +10,7 @@ class WordRepo {
   Future<void> fetchWords() async {
     final records = await pb
         .collection('words')
-        .getFullList(fields: 'cyrillic,mongol');
+        .getFullList(fields: 'cyrillic,mongol', sort: 'cyrillic');
     for (final record in records) {
       words[record.data['cyrillic']] = record.data['mongol'];
       // _words.add(

@@ -21,6 +21,10 @@ class HomeManager {
 
   bool get isLoggedIn => pb.authStore.isValid;
 
+  Future<void> loadWords() async {
+    await wordRepo.fetchWords();
+  }
+
   void convert(String text) {
     final (converted, words) = converter.convert(text);
     convertedText = converted;
@@ -50,9 +54,5 @@ class HomeManager {
             ? '$cyrillic амжилттай нэмэгдлээ'
             : 'Үг нэмэхэд алдаа гарлаа';
     onWordAdded?.call(message);
-  }
-
-  Future<void> loadWords() async {
-    await wordRepo.fetchWords();
   }
 }

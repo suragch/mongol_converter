@@ -1,4 +1,7 @@
+// import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
 
@@ -15,6 +18,7 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
   final wordRepo = getIt<WordRepo>();
+  final converter = Converter();
 
   @override
   void initState() {
@@ -87,39 +91,7 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
           ),
         ],
       ),
-      body:
-          wordRepo.words.isEmpty
-              ? const Center(child: Text('No words found'))
-              : ListView.builder(
-                itemCount: _keys.length,
-                itemBuilder: (context, index) {
-                  final cyrillic = _keys[index];
-                  final mongol = wordRepo.words[cyrillic] ?? '';
-                  return Card(
-                    margin: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      title: Text(
-                        cyrillic,
-                        style: const TextStyle(
-                          // fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      subtitle: Text(
-                        mongol,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'MenksoftQagaan',
-                        ),
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () => _editWord(cyrillic),
-                      ),
-                    ),
-                  );
-                },
-              ),
+      body: _buildWordList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           // Navigate to add word page and refresh list when returning
@@ -134,6 +106,37 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  Widget _buildWordList() {
+    if (wordRepo.words.isEmpty) {
+      return const Center(child: Text('No words found'));
+    }
+    return ListView.builder(
+      itemCount: _keys.length,
+      itemBuilder: (context, index) {
+        final cyrillic = _keys[index];
+        final mongol = wordRepo.words[cyrillic] ?? '';
+        final latin = converter.menksoftToLatin(mongol);
+        return ListTile(
+          title: Text(
+            cyrillic,
+            style: const TextStyle(
+              // fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          subtitle: Text(
+            '$mongol    $latin',
+            style: TextStyle(fontSize: 20, fontFamily: 'MenksoftQagaan'),
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => _editWord(cyrillic),
+          ),
+        );
+      },
     );
   }
 }
