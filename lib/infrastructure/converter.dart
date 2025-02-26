@@ -190,10 +190,10 @@ class Converter {
       } else if (code == Unicode.YA) {
         converted.write('y');
       } else if (code == Unicode.U) {
-        converted.write('u');
+        converted.write('v');
       } else if (code == Unicode.I) {
         converted.write('i');
-      } else if (code == Unicode.O) {
+      } else if (code == Unicode.OE) {
         converted.write('o');
       } else if (code == Unicode.PA) {
         converted.write('p');
@@ -222,7 +222,7 @@ class Converter {
       } else if (code == Unicode.CHA) {
         converted.write('c');
       } else if (code == Unicode.U) {
-        converted.write('v');
+        converted.write('u');
       } else if (code == Unicode.BA) {
         converted.write('b');
       } else if (code == Unicode.NA) {
