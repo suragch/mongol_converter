@@ -114,28 +114,63 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
       return const Center(child: Text('No words found'));
     }
     return ListView.builder(
-      itemCount: _keys.length,
+      itemCount: _keys.length + 1,
       itemBuilder: (context, index) {
-        final cyrillic = _keys[index];
+        if (index == 0) {
+          return Center(
+            child: Text(
+              '${_keys.length} entries',
+              style: TextStyle(color: Colors.grey),
+            ),
+          );
+        }
+        final cyrillic = _keys[index - 1];
         final mongol = wordRepo.words[cyrillic] ?? '';
         final latin = converter.menksoftToLatin(mongol);
-        return ListTile(
-          title: Text(
-            cyrillic,
-            style: const TextStyle(
-              // fontWeight: FontWeight.bold,
-              fontSize: 18,
+        return Row(
+          children: [
+            SizedBox(width: 16),
+            Expanded(child: Text(cyrillic)),
+            Expanded(
+              child: Text(
+                mongol,
+                style: const TextStyle(
+                  fontFamily: 'MenksoftQagaan',
+                  fontSize: 20,
+                ),
+              ),
             ),
-          ),
-          subtitle: Text(
-            '$mongol    $latin',
-            style: TextStyle(fontSize: 20, fontFamily: 'MenksoftQagaan'),
-          ),
-          trailing: IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => _editWord(cyrillic),
-          ),
+            Expanded(child: Text(latin)),
+            IconButton(
+              tooltip: 'Edit',
+              icon: const Icon(Icons.edit),
+              onPressed: () => _editWord(cyrillic),
+            ),
+            IconButton(
+              tooltip: 'Delete',
+              icon: const Icon(Icons.delete),
+              onPressed: () => _editWord(cyrillic),
+            ),
+            SizedBox(width: 16),
+          ],
         );
+        // return ListTile(
+        //   title: Text(
+        //     cyrillic,
+        //     style: const TextStyle(
+        //       // fontWeight: FontWeight.bold,
+        //       fontSize: 18,
+        //     ),
+        //   ),
+        //   subtitle: Text(
+        //     '$mongol    $latin',
+        //     style: TextStyle(fontSize: 20, fontFamily: 'MenksoftQagaan'),
+        //   ),
+        //   trailing: IconButton(
+        //     icon: const Icon(Icons.edit),
+        //     onPressed: () => _editWord(cyrillic),
+        //   ),
+        // );
       },
     );
   }
