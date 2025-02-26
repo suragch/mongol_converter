@@ -1,9 +1,5 @@
-// import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
-import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
-import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
+import 'package:mongol_converter_db_creator/ui/browser/browser_manager.dart';
 import 'package:mongol_converter_db_creator/ui/common/add_word_dialog.dart';
 
 class WordBrowserPage extends StatefulWidget {
@@ -14,35 +10,17 @@ class WordBrowserPage extends StatefulWidget {
 }
 
 class _WordBrowserPageState extends State<WordBrowserPage> {
-  List<String>? _keys;
-  // Map<String, String> _filteredWords = {};
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
-  final wordRepo = getIt<WordRepo>();
-  final converter = getIt<Converter>();
+  final manager = BrowserManager();
 
   @override
   void initState() {
     super.initState();
-    _keys = wordRepo.words.keys.toList();
+    manager.init();
   }
 
-  void _filterWords(String query) {
-    // setState(() {
-    //   if (query.isEmpty) {
-    //     _filteredWords = _words;
-    //   } else {
-    //     _filteredWords =
-    //         _words
-    //             .where(
-    //               (word) => word['cyrillic'].toString().startsWith(
-    //                 query.toLowerCase(),
-    //               ),
-    //             )
-    //             .toList();
-    //   }
-    // });
-  }
+  void _filterWords(String query) {}
 
   void _editWord(String cyrillic, String latin) async {
     showDialog(
@@ -51,12 +29,7 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
           (context) => AddEditWordDialog(
             cyrillic: cyrillic,
             latin: latin,
-            onAddEditWord: (word) async {
-              final success = await wordRepo.updateWord(word);
-              if (success) {
-                setState(() {});
-              }
-            },
+            onAddEditWord: manager.updateWord,
           ),
     );
   }
@@ -76,11 +49,7 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
               TextButton(
                 onPressed: () async {
                   Navigator.pop(context);
-                  final success = await wordRepo.deleteWord(cyrillic);
-                  if (success) {
-                    _keys = wordRepo.words.keys.toList();
-                    setState(() {});
-                  }
+                  manager.deleteWord(cyrillic);
                 },
                 child: const Text('Delete'),
               ),
@@ -127,15 +96,11 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
       body: _buildWordList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // Navigate to add word page and refresh list when returning
-          // final result = await Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const WordEditPage()),
-          // );
-
-          // if (result == true) {
-          //   _loadWords();
-          // }
+          showDialog(
+            context: context,
+            builder:
+                (context) => AddEditWordDialog(onAddEditWord: manager.addWord),
+          );
         },
         child: const Icon(Icons.add),
       ),
@@ -143,50 +108,54 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
   }
 
   Widget _buildWordList() {
-    if (wordRepo.words.isEmpty) {
-      return const Center(child: Text('No words found'));
-    }
-    final length = _keys?.length ?? 0;
-    return ListView.builder(
-      itemCount: length + 1,
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return Center(
-            child: Text(
-              '$length entries',
-              style: TextStyle(color: Colors.grey),
-            ),
-          );
+    return ValueListenableBuilder<List<String>>(
+      valueListenable: manager.listNotifier,
+      builder: (context, wordList, child) {
+        if (wordList.isEmpty) {
+          return const Center(child: Text('No words found'));
         }
-        final cyrillic = _keys![index - 1];
-        final mongol = wordRepo.words[cyrillic] ?? '';
-        final latin = converter.menksoftToLatin(mongol);
-        return Row(
-          children: [
-            SizedBox(width: 16),
-            Expanded(child: Text(cyrillic)),
-            Expanded(
-              child: Text(
-                mongol,
-                style: const TextStyle(
-                  fontFamily: 'MenksoftQagaan',
-                  fontSize: 20,
+        return ListView.builder(
+          itemCount: wordList.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Center(
+                child: Text(
+                  '${wordList.length} entries',
+                  style: TextStyle(color: Colors.grey),
                 ),
-              ),
-            ),
-            Expanded(child: Text(latin)),
-            IconButton(
-              tooltip: 'Edit',
-              icon: const Icon(Icons.edit),
-              onPressed: () => _editWord(cyrillic, latin),
-            ),
-            IconButton(
-              tooltip: 'Delete',
-              icon: const Icon(Icons.delete),
-              onPressed: () => _deleteWord(cyrillic),
-            ),
-            SizedBox(width: 16),
-          ],
+              );
+            }
+            final cyrillic = manager.wordAtIndex(index - 1);
+            final mongol = manager.getMongol(cyrillic);
+            final latin = manager.getLatin(mongol);
+            return Row(
+              children: [
+                SizedBox(width: 16),
+                Expanded(child: Text(cyrillic)),
+                Expanded(
+                  child: Text(
+                    mongol,
+                    style: const TextStyle(
+                      fontFamily: 'MenksoftQagaan',
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                Expanded(child: Text(latin)),
+                IconButton(
+                  tooltip: 'Edit',
+                  icon: const Icon(Icons.edit),
+                  onPressed: () => _editWord(cyrillic, latin),
+                ),
+                IconButton(
+                  tooltip: 'Delete',
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => _deleteWord(cyrillic),
+                ),
+                SizedBox(width: 16),
+              ],
+            );
+          },
         );
       },
     );

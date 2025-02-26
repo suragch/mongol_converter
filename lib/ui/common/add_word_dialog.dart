@@ -7,41 +7,45 @@ import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
 class AddEditWordDialog extends StatefulWidget {
   const AddEditWordDialog({
     super.key,
-    required this.onAddEditWord,
-    required this.cyrillic,
+    this.cyrillic,
     this.latin,
+    required this.onAddEditWord,
   });
 
-  final void Function(Word) onAddEditWord;
-  final String cyrillic;
+  final String? cyrillic;
   final String? latin;
+  final void Function(Word) onAddEditWord;
 
   @override
   State<AddEditWordDialog> createState() => _AddEditWordDialogState();
 }
 
 class _AddEditWordDialogState extends State<AddEditWordDialog> {
-  late final TextEditingController wordController;
+  late final TextEditingController cyrillicController;
+  late final TextEditingController latinController;
   String mongolText = '';
   final converter = getIt<Converter>();
 
   @override
   void initState() {
     super.initState();
-    wordController = TextEditingController(text: widget.latin);
-    wordController.addListener(_updateMongolText);
+    if (widget.cyrillic == null) {
+      cyrillicController = TextEditingController();
+    }
+    latinController = TextEditingController(text: widget.latin);
+    latinController.addListener(_updateMongolText);
     // wordController.text = widget.latin ?? '';
     print('initState: ${widget.latin}');
   }
 
   void _updateMongolText() {
-    mongolText = converter.latinToMenksoft(wordController.text);
+    mongolText = converter.latinToMenksoft(latinController.text);
     setState(() {});
   }
 
   @override
   void dispose() {
-    wordController.removeListener(_updateMongolText);
+    latinController.removeListener(_updateMongolText);
     super.dispose();
   }
 
@@ -74,11 +78,23 @@ class _AddEditWordDialogState extends State<AddEditWordDialog> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.cyrillic, style: TextStyle(fontSize: 30)),
+                    widget.cyrillic == null
+                        ? TextField(
+                          autofocus: true,
+                          controller: cyrillicController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Кирилл',
+                          ),
+                        )
+                        : Text(
+                          widget.cyrillic!,
+                          style: TextStyle(fontSize: 30),
+                        ),
                     SizedBox(height: 8),
                     TextField(
                       autofocus: true,
-                      controller: wordController,
+                      controller: latinController,
                       decoration: InputDecoration(border: OutlineInputBorder()),
                     ),
                     SizedBox(height: 8),
@@ -94,7 +110,8 @@ class _AddEditWordDialogState extends State<AddEditWordDialog> {
                             Navigator.pop(context);
                             widget.onAddEditWord(
                               Word(
-                                cyrillic: widget.cyrillic,
+                                cyrillic:
+                                    widget.cyrillic ?? cyrillicController.text,
                                 mongol: mongolText,
                               ),
                             );
