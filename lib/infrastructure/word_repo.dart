@@ -1,10 +1,10 @@
+import 'dart:developer';
+
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class WordRepo {
-  // final pb = PocketBase('http://127.0.0.1:8090/');
   final pb = getIt<PocketBase>();
-  // final _words = <Word>{};
   final words = <String, String>{};
 
   Future<void> fetchWords() async {
@@ -13,14 +13,7 @@ class WordRepo {
         .getFullList(fields: 'cyrillic,mongol', sort: 'cyrillic');
     for (final record in records) {
       words[record.data['cyrillic']] = record.data['mongol'];
-      // _words.add(
-      //   Word(
-      //     cyrillic: record.data['cyrillic'] as String,
-      //     mongol: record.data['mongol'] as String,
-      //   ),
-      // );
     }
-    print('Fetched ${records.length} words');
   }
 
   Future<bool> addWord(String cyrillic, String mongol) async {
@@ -34,7 +27,7 @@ class WordRepo {
       words[cyrillic] = mongol;
       return true;
     } catch (e) {
-      print('$e');
+      log(e.toString());
       return false;
     }
   }
@@ -44,19 +37,19 @@ class WordRepo {
   }
 }
 
-// class Word {
-//   Word({required this.cyrillic, required this.mongol});
-//   final String cyrillic;
-//   final String mongol;
+class Word {
+  Word({required this.cyrillic, required this.mongol});
+  final String cyrillic;
+  final String mongol;
 
-//   @override
-//   bool operator ==(Object other) {
-//     if (identical(this, other)) return true;
-//     return other is Word &&
-//         other.cyrillic == cyrillic &&
-//         other.mongol == mongol;
-//   }
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Word &&
+        other.cyrillic == cyrillic &&
+        other.mongol == mongol;
+  }
 
-//   @override
-//   int get hashCode => cyrillic.hashCode ^ mongol.hashCode;
-// }
+  @override
+  int get hashCode => cyrillic.hashCode ^ mongol.hashCode;
+}

@@ -58,7 +58,7 @@ class Converter {
     return wordRepo.menksoftForCyrillic(word);
   }
 
-  String convertLatinToMenksoftCode(String latinText) {
+  String latinToMenksoft(String latinText) {
     final unicode = _convertLatinToMongolianUnicode(latinText);
     return mongolCode.unicodeToMenksoft(unicode);
   }

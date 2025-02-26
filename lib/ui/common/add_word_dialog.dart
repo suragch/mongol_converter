@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mongol/mongol.dart';
-import 'package:mongol_converter_db_creator/ui/home/home_manager.dart';
+import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
+import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
+import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
 
 class AddWordDialog extends StatefulWidget {
-  final String word;
-  final HomeManager manager;
+  const AddWordDialog({
+    super.key,
+    required this.onAddWord,
+    required this.cyrillic,
+    this.mongol,
+  });
 
-  const AddWordDialog({super.key, required this.word, required this.manager});
+  final void Function(Word) onAddWord;
+  final String cyrillic;
+  final String? mongol;
 
   @override
   State<AddWordDialog> createState() => _AddWordDialogState();
@@ -14,16 +22,22 @@ class AddWordDialog extends StatefulWidget {
 
 class _AddWordDialogState extends State<AddWordDialog> {
   final wordController = TextEditingController();
-  String mongolText = '';
+  late String mongolText = widget.mongol ?? '';
+  final converter = getIt<Converter>();
 
   @override
   void initState() {
     super.initState();
     wordController.addListener(_updateMongolText);
+    // if (widget.mongol != null) {
+    //   mongolText = widget.mongol!;
+    //   setState(() {});
+    // }
+    print('mongol $mongolText');
   }
 
   void _updateMongolText() {
-    mongolText = widget.manager.convertLatin(wordController.text);
+    mongolText = converter.latinToMenksoft(wordController.text);
     setState(() {});
   }
 
@@ -62,7 +76,7 @@ class _AddWordDialogState extends State<AddWordDialog> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.word, style: TextStyle(fontSize: 30)),
+                    Text(widget.cyrillic, style: TextStyle(fontSize: 30)),
                     SizedBox(height: 8),
                     TextField(
                       autofocus: true,
@@ -80,9 +94,11 @@ class _AddWordDialogState extends State<AddWordDialog> {
                         TextButton(
                           onPressed: () async {
                             Navigator.pop(context);
-                            await widget.manager.addWord(
-                              cyrillic: widget.word,
-                              mongol: mongolText,
+                            widget.onAddWord(
+                              Word(
+                                cyrillic: widget.cyrillic,
+                                mongol: mongolText,
+                              ),
                             );
                           },
                           child: Text('Нэмэх'),

@@ -13,7 +13,7 @@ class HomeManager {
   final pb = getIt<PocketBase>();
   String convertedText = '';
   List<String> unknownWords = [];
-  final converter = Converter();
+  final converter = getIt<Converter>();
   // final pb = PocketBase('http://127.0.0.1:8090/');
   final userSettings = getIt<UserSettings>();
 
@@ -32,7 +32,7 @@ class HomeManager {
   }
 
   String convertLatin(String latin) {
-    return converter.convertLatinToMenksoftCode(latin);
+    return converter.latinToMenksoft(latin);
   }
 
   Future<void> login(String username, String password) async {

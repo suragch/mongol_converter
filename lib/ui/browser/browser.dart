@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
+import 'package:mongol_converter_db_creator/ui/common/add_word_dialog.dart';
 
 class WordBrowserPage extends StatefulWidget {
   const WordBrowserPage({super.key});
@@ -18,13 +19,12 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
   final wordRepo = getIt<WordRepo>();
-  final converter = Converter();
+  final converter = getIt<Converter>();
 
   @override
   void initState() {
     super.initState();
     _keys = wordRepo.words.keys.toList();
-    print('_keys: $_keys');
   }
 
   void _filterWords(String query) {
@@ -44,16 +44,19 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
     // });
   }
 
-  void _editWord(String cyrillic) async {
-    // Navigate to edit page and refresh list when returning
-    // final result = await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => WordEditPage(word: word)),
-    // );
-
-    // if (result == true) {
-    //   _loadWords();
-    // }
+  void _editWord(String cyrillic, String mongol, String latin) async {
+    print('edit $cyrillic');
+    showDialog(
+      context: context,
+      builder:
+          (context) => AddWordDialog(
+            cyrillic: cyrillic,
+            mongol: mongol,
+            onAddWord: (word) {
+              // TODO
+            },
+          ),
+    );
   }
 
   @override
@@ -95,10 +98,10 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           // Navigate to add word page and refresh list when returning
-          final result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const WordEditPage()),
-          );
+          // final result = await Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const WordEditPage()),
+          // );
 
           // if (result == true) {
           //   _loadWords();
@@ -144,196 +147,17 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
             IconButton(
               tooltip: 'Edit',
               icon: const Icon(Icons.edit),
-              onPressed: () => _editWord(cyrillic),
+              onPressed: () => _editWord(cyrillic, mongol, latin),
             ),
             IconButton(
               tooltip: 'Delete',
               icon: const Icon(Icons.delete),
-              onPressed: () => _editWord(cyrillic),
+              onPressed: () => _editWord(cyrillic, mongol, latin),
             ),
             SizedBox(width: 16),
           ],
         );
-        // return ListTile(
-        //   title: Text(
-        //     cyrillic,
-        //     style: const TextStyle(
-        //       // fontWeight: FontWeight.bold,
-        //       fontSize: 18,
-        //     ),
-        //   ),
-        //   subtitle: Text(
-        //     '$mongol    $latin',
-        //     style: TextStyle(fontSize: 20, fontFamily: 'MenksoftQagaan'),
-        //   ),
-        //   trailing: IconButton(
-        //     icon: const Icon(Icons.edit),
-        //     onPressed: () => _editWord(cyrillic),
-        //   ),
-        // );
       },
-    );
-  }
-}
-
-class WordEditPage extends StatefulWidget {
-  final Map<String, dynamic>? word;
-
-  const WordEditPage({super.key, this.word});
-
-  @override
-  State<WordEditPage> createState() => _WordEditPageState();
-}
-
-class _WordEditPageState extends State<WordEditPage> {
-  final TextEditingController _cyrillicController = TextEditingController();
-  final TextEditingController _mongolController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.word != null) {
-      _cyrillicController.text = widget.word!['cyrillic'] ?? '';
-      _mongolController.text = widget.word!['mongol'] ?? '';
-    }
-  }
-
-  Future<void> _saveWord() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    // final database = await openDatabase(
-    //   join(await getDatabasesPath(), 'mongol_converter.db'),
-    // );
-
-    if (widget.word == null) {
-      // Insert new word
-      // await database.insert('words', {
-      //   'cyrillic': _cyrillicController.text,
-      //   'mongol': _mongolController.text,
-      // }, conflictAlgorithm: ConflictAlgorithm.replace);
-    } else {
-      // Update existing word
-      // await database.update(
-      //   'words',
-      //   {
-      //     'cyrillic': _cyrillicController.text,
-      //     'mongol': _mongolController.text,
-      //   },
-      //   where: 'id = ?',
-      //   whereArgs: [widget.word!['id']],
-      // );
-    }
-
-    if (mounted) {
-      Navigator.pop(context, true);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.word == null ? 'Add Word' : 'Edit Word'),
-        actions: [
-          if (widget.word != null)
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () async {
-                // Show confirmation dialog before deleting
-                final confirm = await showDialog<bool>(
-                  context: context,
-                  builder:
-                      (context) => AlertDialog(
-                        title: const Text('Confirm Delete'),
-                        content: const Text(
-                          'Are you sure you want to delete this word?',
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, true),
-                            child: const Text('Delete'),
-                          ),
-                        ],
-                      ),
-                );
-
-                if (confirm == true) {
-                  // final database = await openDatabase(
-                  //   join(await getDatabasesPath(), 'mongol_converter.db'),
-                  // );
-
-                  // await database.delete(
-                  //   'words',
-                  //   where: 'id = ?',
-                  //   whereArgs: [widget.word!['id']],
-                  // );
-
-                  if (mounted) {
-                    Navigator.pop(context, true);
-                  }
-                }
-              },
-            ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _cyrillicController,
-                decoration: const InputDecoration(
-                  labelText: 'Cyrillic',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the Cyrillic text';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _mongolController,
-                decoration: const InputDecoration(
-                  labelText: 'Mongol',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the Mongol text';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _saveWord,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 12,
-                  ),
-                ),
-                child: Text(
-                  widget.word == null ? 'Add Word' : 'Save Changes',
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

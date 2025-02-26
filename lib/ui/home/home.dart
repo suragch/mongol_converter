@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mongol/mongol.dart';
-import 'package:mongol_converter_db_creator/ui/home/add_word_dialog.dart';
+import 'package:mongol_converter_db_creator/ui/common/add_word_dialog.dart';
 import 'package:mongol_converter_db_creator/ui/home/drawer.dart';
 
 import 'home_manager.dart';
@@ -131,8 +131,14 @@ class _HomePageState extends State<HomePage> {
                         context: context,
                         builder:
                             (context) => AddWordDialog(
-                              word: manager.unknownWords[index],
-                              manager: manager,
+                              cyrillic: manager.unknownWords[index],
+                              onAddWord: (word) async {
+                                await manager.addWord(
+                                  cyrillic: word.cyrillic,
+                                  mongol: word.mongol,
+                                );
+                                setState(() {});
+                              },
                             ),
                       );
                     },
