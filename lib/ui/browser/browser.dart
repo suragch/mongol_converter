@@ -20,7 +20,10 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
     manager.init();
   }
 
-  void _filterWords(String query) {}
+  void _filterWords(String query) {
+    print('filtering words: $query');
+    manager.filterWords(query);
+  }
 
   void _editWord(String cyrillic, String latin) async {
     showDialog(
@@ -69,9 +72,7 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
                   decoration: const InputDecoration(
                     hintText: 'Search words...',
                     border: InputBorder.none,
-                    hintStyle: TextStyle(color: Colors.white54),
                   ),
-                  style: const TextStyle(color: Colors.white),
                   onChanged: _filterWords,
                   autofocus: true,
                 )

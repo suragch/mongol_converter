@@ -48,6 +48,15 @@ class BrowserManager {
       listNotifier.deleteItem(cyrillic);
     }
   }
+
+  void filterWords(String query) {
+    if (query.isEmpty) {
+      listNotifier.value = wordRepo.words.keys.toList();
+    } else {
+      listNotifier.value =
+          wordRepo.words.keys.where((word) => word.startsWith(query)).toList();
+    }
+  }
 }
 
 class _WordListNotifier<T> extends ValueNotifier<List<String>> {

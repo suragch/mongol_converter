@@ -47,7 +47,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showSnackBar(String message) {
-    print('message $message');
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), duration: const Duration(seconds: 1)),
     );

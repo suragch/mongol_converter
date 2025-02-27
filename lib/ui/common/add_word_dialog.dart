@@ -34,8 +34,6 @@ class _AddEditWordDialogState extends State<AddEditWordDialog> {
     }
     latinController = TextEditingController(text: widget.latin);
     latinController.addListener(_updateMongolText);
-    // wordController.text = widget.latin ?? '';
-    print('initState: ${widget.latin}');
   }
 
   void _updateMongolText() {

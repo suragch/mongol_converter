@@ -34,7 +34,6 @@ class Converter {
 
     var returnValue = converted.toString().trimRight();
     returnValue = returnValue.replaceAll(' $nnbs', nnbs);
-    print(returnValue);
 
     return (returnValue, unknownWords.toList());
   }
