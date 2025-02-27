@@ -14,7 +14,6 @@ class HomeManager {
   String convertedText = '';
   List<String> unknownWords = [];
   final converter = getIt<Converter>();
-  // final pb = PocketBase('http://127.0.0.1:8090/');
   final userSettings = getIt<UserSettings>();
 
   String get storedUserEmail => userSettings.getEmail() ?? '';

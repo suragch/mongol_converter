@@ -142,16 +142,18 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
                   ),
                 ),
                 Expanded(child: Text(latin)),
-                IconButton(
-                  tooltip: 'Edit',
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => _editWord(cyrillic, latin),
-                ),
-                IconButton(
-                  tooltip: 'Delete',
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => _deleteWord(cyrillic),
-                ),
+                if (manager.isLoggedIn)
+                  IconButton(
+                    tooltip: 'Edit',
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _editWord(cyrillic, latin),
+                  ),
+                if (manager.isLoggedIn)
+                  IconButton(
+                    tooltip: 'Delete',
+                    icon: const Icon(Icons.delete),
+                    onPressed: () => _deleteWord(cyrillic),
+                  ),
                 SizedBox(width: 16),
               ],
             );

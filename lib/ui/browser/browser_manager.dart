@@ -2,11 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class BrowserManager {
   final listNotifier = _WordListNotifier([]);
   final wordRepo = getIt<WordRepo>();
   final converter = getIt<Converter>();
+  final pb = getIt<PocketBase>();
+
+  bool get isLoggedIn => pb.authStore.isValid;
 
   void init() {
     listNotifier.value = wordRepo.words.keys.toList();

@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(height: 8),
-            Text('Үл мэдэгдэх үгс:'),
+            if (manager.unknownWords.isNotEmpty) Text('Үл мэдэгдэх үгс:'),
             Expanded(
               child: ListView.builder(
                 itemCount: manager.unknownWords.length,
