@@ -169,8 +169,16 @@ class Converter {
     return int.tryParse(word) == null;
   }
 
+  String menksoftToUnicode(String menksoft) {
+    return mongolCode.menksoftToUnicode(menksoft);
+  }
+
   String menksoftToLatin(String menksoft) {
     final unicode = mongolCode.menksoftToUnicode(menksoft);
+    return unicodeToLatin(unicode);
+  }
+
+  String unicodeToLatin(String unicode) {
     final converted = StringBuffer();
     for (var i = 0; i < unicode.length; i++) {
       final char = unicode[i];

@@ -78,6 +78,14 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
                 )
                 : const Text('Word Browser'),
         actions: [
+          if (!_isSearching)
+            IconButton(
+              icon: const Icon(Icons.download),
+              tooltip: 'Save to CSV',
+              onPressed: () async {
+                await manager.saveToCSV();
+              },
+            ),
           IconButton(
             icon: Icon(_isSearching ? Icons.close : Icons.search),
             onPressed: () {

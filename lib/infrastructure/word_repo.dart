@@ -1,5 +1,7 @@
+// import 'dart:convert';
 import 'dart:developer';
 
+import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -67,6 +69,20 @@ class WordRepo {
       log(e.toString());
       return false;
     }
+  }
+
+  String toCSV() {
+    final converter = getIt<Converter>();
+    final csv = StringBuffer();
+    csv.writeln('cyrillic,menksoft,unicode,latin');
+    for (final entry in words.entries) {
+      final cyrillic = entry.key;
+      final menksoft = entry.value;
+      final unicode = converter.menksoftToUnicode(menksoft);
+      final latin = converter.unicodeToLatin(unicode);
+      csv.writeln('$cyrillic,$menksoft,$unicode,$latin');
+    }
+    return csv.toString();
   }
 }
 

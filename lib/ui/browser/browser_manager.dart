@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
 import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
@@ -56,6 +59,18 @@ class BrowserManager {
       listNotifier.value =
           wordRepo.words.keys.where((word) => word.startsWith(query)).toList();
     }
+  }
+
+  Future<void> saveToCSV() async {
+    final csv = wordRepo.toCSV();
+    print('csv: $csv');
+    final timestamp = DateTime.now().toIso8601String();
+    await FileSaver.instance.saveFile(
+      name: 'mongol_$timestamp',
+      ext: 'csv',
+      bytes: utf8.encode(csv),
+      mimeType: MimeType.csv,
+    );
   }
 }
 
