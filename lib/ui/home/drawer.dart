@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mongol_converter_db_creator/ui/about/about.dart';
 import 'package:mongol_converter_db_creator/ui/browser/browser.dart';
+import 'package:mongol_converter_db_creator/ui/settings/settings.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -36,15 +37,17 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-          // ListTile(
-          //   leading: Icon(Icons.settings),
-          //   title: Text('Settings'),
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //     // Navigate to settings page
-          //   },
-          // ),
-          // Divider(),
+          ListTile(
+            leading: Icon(Icons.settings_outlined),
+            title: Text('Settings'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+          ),
           ListTile(
             leading: Icon(Icons.info_outline),
             title: Text('About'),

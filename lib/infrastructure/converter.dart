@@ -228,7 +228,7 @@ class Converter {
         converted.write('x');
       } else if (code == Unicode.CHA) {
         converted.write('c');
-      } else if (code == Unicode.U) {
+      } else if (code == Unicode.UE) {
         converted.write('u');
       } else if (code == Unicode.BA) {
         converted.write('b');

@@ -204,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                   child: IconButton(
                     icon: Icon(Icons.copy),
                     onPressed: () {
-                      final text = manager.convertedText;
+                      final text = manager.prepareTextToCopy();
                       Clipboard.setData(ClipboardData(text: text));
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
