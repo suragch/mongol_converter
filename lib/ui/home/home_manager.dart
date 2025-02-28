@@ -61,8 +61,6 @@ class HomeManager {
         return convertedText;
       case Encoding.unicode:
         return converter.menksoftToUnicode(convertedText);
-      // case Encoding.cms:
-      //   return converter.convertLatinToCyrillic(convertedText);
     }
   }
 }

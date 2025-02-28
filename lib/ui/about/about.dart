@@ -50,36 +50,38 @@ class _AboutPageState extends State<AboutPage> {
               ),
               const SizedBox(height: 32),
               SelectableText(
-                'Description',
+                'Тодорхойлолт',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               SelectableText(
-                'This application converts Cyrillic Mongolian to traditional Mongolian script. Currently, '
-                'we are building the open-source database needed to support this tool. While the '
-                'database is being build, you may find a large number of words that cannot be '
-                'converted. ',
+                'Энэхүү программ нь кирилл монгол бичгийг уламжлалт монгол '
+                'бичиг рүү хөрвүүлдэг. Одоогоор бид энэ хэрэгслийг дэмжихэд '
+                'шаардлагатай нээлттэй эхийн мэдээллийн санг бүрдүүлж байна. '
+                'Өгөгдлийн санг бүрдүүлж байх үед та хөрвүүлэх боломжгүй олон '
+                'тооны үгсийг олж болно.',
                 // 'If you are an expert in both Cyrillic and traditional Mongolian and '
                 // 'would like to help, contact us at studymongolian@gmail.com.',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 16),
               SelectableText(
-                'Our plan is to release the dataset to the public domain when it is ready. '
-                'This project is a gift to the Mongolian people and those from around the world '
-                'who are interested in the Mongolian language. ',
+                'Энэ програмын код болон түүний үүсгэсэн өгөгдлийн багц нь '
+                'үнэгүй бөгөөд нээлттэй эх сурвалж юм. Та тэдгээрийг '
+                'хүссэнээрээ ашиглаж болно.',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 16),
               SelectableText(
-                'Privacy',
+                'Нууцлал',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               SelectableText(
-                'The Cyrillic to Mongolian conversion is performed directly in your browser. '
-                'No documents are uploaded to or stored on the server. Your IP address is '
-                'recorded, but as long as you are not logged in, no personally identifiable information '
-                'is stored. If you are logged in as an editor, we record the individual words you add or update '
-                'along with your username and email.',
+                'Кирилл үсгийг монгол руу хөрвүүлэх нь таны хөтөч дээр шууд '
+                'хийгддэг. Таны баримтыг серверт байршуулаагүй байна. Таны IP '
+                'хаяг бичигдсэн боловч нэвтэрч ороогүй л бол хувийн мэдээллийг '
+                'тань хадгалахгүй. Хэрэв та засварлагчаар нэвтэрсэн бол бид '
+                'таны хэрэглэгчийн нэр, имэйлийн хамт таны нэмсэн эсвэл '
+                'шинэчлэгдсэн үгсийг бүртгэдэг.',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],

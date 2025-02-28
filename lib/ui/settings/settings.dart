@@ -23,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      appBar: AppBar(title: Text('Тохиргоо')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
@@ -32,7 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
             children: [
               const SizedBox(height: 16),
               Text(
-                'Output encoding for copied Mongol text:',
+                'Монгол бичигийн кодчилол:',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               RadioListTile(

@@ -25,11 +25,12 @@ class _AddEditWordDialogState extends State<AddEditWordDialog> {
   late final TextEditingController latinController;
   String mongolText = '';
   final converter = getIt<Converter>();
+  late bool isAdding = widget.cyrillic == null;
 
   @override
   void initState() {
     super.initState();
-    if (widget.cyrillic == null) {
+    if (isAdding) {
       cyrillicController = TextEditingController();
     }
     latinController = TextEditingController(text: widget.latin);
@@ -119,7 +120,7 @@ class _AddEditWordDialogState extends State<AddEditWordDialog> {
                                 ),
                               );
                             },
-                            child: Text('Нэмэх'),
+                            child: isAdding ? Text('Нэмэх') : Text('Хадгалах'),
                           ),
                         ],
                       ),

@@ -208,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                       Clipboard.setData(ClipboardData(text: text));
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Copied to clipboard'),
+                          content: Text('Текстийг хуулсан'),
                           duration: Duration(seconds: 1),
                         ),
                       );

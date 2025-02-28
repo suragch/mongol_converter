@@ -19,7 +19,7 @@ class Converter {
         _processWord(currentWord.toString(), converted, unknownWords);
         currentWord.clear();
         converted.write(' ');
-      } else if (char.contains(RegExp(r'[.,!?;:]'))) {
+      } else if (char.contains(RegExp(r'[.,!?;:()"]'))) {
         _processWord(currentWord.toString(), converted, unknownWords);
         currentWord.clear();
         _processWord(char, converted, unknownWords);

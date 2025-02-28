@@ -25,7 +25,6 @@ class UserSettings {
   }
 
   Future<void> saveEncoding(Encoding code) async {
-    print('Saving encoding: $code');
     await _prefs.setString(_codeKey, code.name);
   }
 }

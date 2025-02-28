@@ -26,7 +26,7 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.list),
-            title: Text('Browse all words'),
+            title: Text('Бүх үгс'),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -39,7 +39,7 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.settings_outlined),
-            title: Text('Settings'),
+            title: Text('Тохиргоо'),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -50,7 +50,7 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.info_outline),
-            title: Text('About'),
+            title: Text('Хэрэглээний тухай'),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(

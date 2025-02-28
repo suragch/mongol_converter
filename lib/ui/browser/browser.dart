@@ -21,7 +21,6 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
   }
 
   void _filterWords(String query) {
-    print('filtering words: $query');
     manager.filterWords(query);
   }
 
@@ -42,19 +41,19 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Delete Word'),
-            content: Text('Are you sure you want to delete $cyrillic?'),
+            title: Text(cyrillic),
+            content: Text('Та энэ үгийг устгахдаа итгэлтэй байна уу?'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
+                child: const Text('Цуцлах'),
               ),
               TextButton(
                 onPressed: () async {
                   Navigator.pop(context);
                   manager.deleteWord(cyrillic);
                 },
-                child: const Text('Delete'),
+                child: const Text('Устгах'),
               ),
             ],
           ),
@@ -70,18 +69,18 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
                 ? TextField(
                   controller: _searchController,
                   decoration: const InputDecoration(
-                    hintText: 'Search words...',
+                    hintText: 'Хайх',
                     border: InputBorder.none,
                   ),
                   onChanged: _filterWords,
                   autofocus: true,
                 )
-                : const Text('Word Browser'),
+                : const Text('Бүх үгс'),
         actions: [
           if (!_isSearching)
             IconButton(
               icon: const Icon(Icons.download),
-              tooltip: 'Save to CSV',
+              tooltip: 'CSV файлд хадгалах',
               onPressed: () async {
                 await manager.saveToCSV();
               },
@@ -121,7 +120,7 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
       valueListenable: manager.listNotifier,
       builder: (context, wordList, child) {
         if (wordList.isEmpty) {
-          return const Center(child: Text('No words found'));
+          return const Center(child: Text('Үг олдсонгүй'));
         }
         return ListView.builder(
           itemCount: wordList.length + 1,
@@ -129,7 +128,7 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
             if (index == 0) {
               return Center(
                 child: Text(
-                  '${wordList.length} entries',
+                  '${wordList.length} үг',
                   style: TextStyle(color: Colors.grey),
                 ),
               );
@@ -153,13 +152,13 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
                 Expanded(child: Text(latin)),
                 if (manager.isLoggedIn)
                   IconButton(
-                    tooltip: 'Edit',
+                    tooltip: 'Засварлах',
                     icon: const Icon(Icons.edit),
                     onPressed: () => _editWord(cyrillic, latin),
                   ),
                 if (manager.isLoggedIn)
                   IconButton(
-                    tooltip: 'Delete',
+                    tooltip: 'Устгах',
                     icon: const Icon(Icons.delete),
                     onPressed: () => _deleteWord(cyrillic),
                   ),
