@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mongol/mongol.dart';
@@ -136,6 +138,7 @@ class _HomePageState extends State<HomePage> {
                                   cyrillic: word.cyrillic,
                                   mongol: word.mongol,
                                 );
+                                manager.convert(controller.text);
                                 setState(() {});
                               },
                             ),
@@ -178,29 +181,40 @@ class _HomePageState extends State<HomePage> {
               height: 300,
               width: double.infinity,
               color: Colors.blue.shade50,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: MongolText(
-                  manager.convertedText,
-                  style: TextStyle(fontFamily: 'MenksoftQagaan', fontSize: 20),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: MongolText(
+                    manager.convertedText,
+                    style: TextStyle(
+                      fontFamily: 'MenksoftQagaan',
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ),
             ),
             Positioned(
               top: 8,
               right: 8,
-              child: IconButton(
-                icon: Icon(Icons.copy),
-                onPressed: () {
-                  final text = manager.convertedText;
-                  Clipboard.setData(ClipboardData(text: text));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Copied to clipboard'),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                },
+              child: ClipOval(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                  child: IconButton(
+                    icon: Icon(Icons.copy),
+                    onPressed: () {
+                      final text = manager.convertedText;
+                      Clipboard.setData(ClipboardData(text: text));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Copied to clipboard'),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ],
