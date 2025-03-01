@@ -1,6 +1,6 @@
 import 'package:mongol_code/mongol_code.dart';
-import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
-import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
+import 'package:mongol_converter/infrastructure/service_locator.dart';
+import 'package:mongol_converter/infrastructure/word_repo.dart';
 
 class Converter {
   final mongolCode = MongolCode.instance;

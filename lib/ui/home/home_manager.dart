@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
-import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
-import 'package:mongol_converter_db_creator/infrastructure/user_settings.dart';
-import 'package:mongol_converter_db_creator/infrastructure/word_repo.dart';
+import 'package:mongol_converter/infrastructure/converter.dart';
+import 'package:mongol_converter/infrastructure/service_locator.dart';
+import 'package:mongol_converter/infrastructure/user_settings.dart';
+import 'package:mongol_converter/infrastructure/word_repo.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class HomeManager {

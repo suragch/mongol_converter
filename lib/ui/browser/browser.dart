@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mongol_converter_db_creator/ui/browser/browser_manager.dart';
-import 'package:mongol_converter_db_creator/ui/common/add_word_dialog.dart';
+import 'package:mongol_converter/ui/browser/browser_manager.dart';
+import 'package:mongol_converter/ui/common/add_word_dialog.dart';
 
 class WordBrowserPage extends StatefulWidget {
   const WordBrowserPage({super.key});

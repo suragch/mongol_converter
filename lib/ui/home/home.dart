@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mongol/mongol.dart';
-import 'package:mongol_converter_db_creator/ui/common/add_word_dialog.dart';
-import 'package:mongol_converter_db_creator/ui/home/drawer.dart';
+import 'package:mongol_converter/ui/common/add_word_dialog.dart';
+import 'package:mongol_converter/ui/home/drawer.dart';
 
 import 'home_manager.dart';
 

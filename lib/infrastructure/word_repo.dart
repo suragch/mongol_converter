@@ -1,8 +1,8 @@
 // import 'dart:convert';
 import 'dart:developer';
 
-import 'package:mongol_converter_db_creator/infrastructure/converter.dart';
-import 'package:mongol_converter_db_creator/infrastructure/service_locator.dart';
+import 'package:mongol_converter/infrastructure/converter.dart';
+import 'package:mongol_converter/infrastructure/service_locator.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class WordRepo {
