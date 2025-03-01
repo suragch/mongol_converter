@@ -1,11 +1,11 @@
 {
-    "name": "mongol_converter",
-    "short_name": "mongol_converter",
+    "name": "Mongol Converter",
+    "short_name": "Mongol Converter",    
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Cyrillic to Mongolian converter",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

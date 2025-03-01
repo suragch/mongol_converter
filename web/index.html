@@ -18,7 +18,7 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Cyrillic to Mongolian converter">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -29,10 +29,48 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>mongol_converter</title>
+  <title>Mongol Converter</title>
   <link rel="manifest" href="manifest.json">
+  
+  <style>
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 8px solid #0175C2;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
+  <!-- Loading animation -->
+  <div id="loading" class="loading">
+    <div class="loader"></div>
+  </div>
+
+  <script>
+    // Hide loading animation when Flutter app is loaded
+    window.addEventListener('flutter-first-frame', function() {
+      var loadingElement = document.getElementById('loading');
+      loadingElement.parentNode.removeChild(loadingElement);
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
