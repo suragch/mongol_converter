@@ -10,4 +10,16 @@ A Cyrillic to Mongolian converter built with Flutter. The backend is hosted with
 
 ## Updating the PocketBase backend
 
+### Nginx configuration
+
+```
+/etc/nginx/sites-available/cyrillic.suragch.dev
+```
+
+This is a reverse proxy for PocketBase running at http://127.0.0.1:8090.
+
+### PocketBase configuration
+
+Pocketbase is running globally with the data folder in the home folder.
+
 
