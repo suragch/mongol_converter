@@ -43,14 +43,19 @@ class _HomePageState extends State<HomePage> {
     _loadWords();
   }
 
-  void _onWordAdded(String message) {
+  void _onWordAdded(bool success, String message) {
     setState(() {});
-    _showSnackBar(message);
+    _showSnackBar(success, message);
   }
 
-  void _showSnackBar(String message) {
+  void _showSnackBar(bool success, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: const Duration(seconds: 1)),
+      SnackBar(
+        content: Text(message),
+        backgroundColor:
+            success ? Colors.green : Theme.of(context).colorScheme.error,
+        duration: const Duration(seconds: 1),
+      ),
     );
   }
 
@@ -68,6 +73,15 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Кирилл  ➜  ᠮᠣᠩᠭᠣᠯ'),
         actions: [
+          if (_appState == HomeState.converted || _appState == HomeState.loaded)
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () async {
+                await _loadWords();
+                manager.convert(controller.text);
+                setState(() {});
+              },
+            ),
           if (!manager.isLoggedIn)
             TextButton(
               onPressed: _showLoginDialog, //
@@ -95,15 +109,50 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 children: [
                   Flexible(
-                    child: TextField(
-                      controller: controller,
-                      textAlignVertical: TextAlignVertical.top,
-                      maxLines: null,
-                      expands: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Кирилл',
-                      ),
+                    child: Stack(
+                      children: [
+                        TextField(
+                          controller: controller,
+                          textAlignVertical: TextAlignVertical.top,
+                          maxLines: null,
+                          expands: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Кирилл',
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 8,
+                          right: 8,
+                          child: ClipOval(
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                              child:
+                                  controller.text.isEmpty
+                                      ? IconButton(
+                                        icon: Icon(Icons.paste),
+                                        onPressed: () {
+                                          Clipboard.getData('text/plain').then((
+                                            value,
+                                          ) {
+                                            final text = value?.text;
+                                            if (text != null) {
+                                              controller.text = text;
+                                            }
+                                          });
+                                        },
+                                      )
+                                      : IconButton(
+                                        icon: Icon(Icons.clear),
+                                        onPressed: () {
+                                          controller.clear();
+                                          manager.convert(controller.text);
+                                        },
+                                      ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(width: 8),
@@ -196,7 +245,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Positioned(
-              top: 8,
+              bottom: 8,
               right: 8,
               child: ClipOval(
                 child: BackdropFilter(
@@ -226,18 +275,18 @@ class _HomePageState extends State<HomePage> {
     final username = manager.storedUserEmail;
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         final usernameController = TextEditingController(text: username);
         final passwordController = TextEditingController();
         return AlertDialog(
-          title: Text('Login'),
+          title: Text('Нэвтрэх'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: usernameController,
                 decoration: InputDecoration(
-                  labelText: 'Username',
+                  labelText: 'Нэвтрэх нэр',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -245,7 +294,7 @@ class _HomePageState extends State<HomePage> {
               TextField(
                 controller: passwordController,
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: 'Нууц үг',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
@@ -254,19 +303,30 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              onPressed: () => Navigator.pop(dialogContext),
+              child: Text('Цуцлах'),
             ),
             TextButton(
               onPressed: () async {
-                Navigator.pop(context);
-                await manager.login(
+                final scaffoldMessenger = ScaffoldMessenger.of(dialogContext);
+                final theme = Theme.of(dialogContext);
+                Navigator.pop(dialogContext);
+                final success = await manager.login(
                   usernameController.text,
                   passwordController.text,
                 );
+                if (mounted && !success) {
+                  scaffoldMessenger.showSnackBar(
+                    SnackBar(
+                      backgroundColor: theme.colorScheme.error,
+                      content: Text('Нэвтрэх үед асуудал гарлаа'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                }
                 setState(() {});
               },
-              child: Text('Login'),
+              child: Text('Нэвтрэх'),
             ),
           ],
         );

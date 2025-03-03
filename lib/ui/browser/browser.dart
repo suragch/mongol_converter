@@ -17,7 +17,7 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
   @override
   void initState() {
     super.initState();
-    manager.init();
+    manager.init(_showSnackBar);
   }
 
   void _filterWords(String query) {
@@ -57,6 +57,17 @@ class _WordBrowserPageState extends State<WordBrowserPage> {
               ),
             ],
           ),
+    );
+  }
+
+  void _showSnackBar(bool success, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor:
+            success ? Colors.green : Theme.of(context).colorScheme.error,
+        duration: const Duration(seconds: 1),
+      ),
     );
   }
 

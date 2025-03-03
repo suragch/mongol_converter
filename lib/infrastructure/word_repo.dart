@@ -21,8 +21,8 @@ class WordRepo {
   Future<bool> addWord(String cyrillic, String mongol) async {
     final body = <String, dynamic>{
       "user": pb.authStore.record!.id,
-      "cyrillic": cyrillic,
-      "mongol": mongol,
+      "cyrillic": cyrillic.trim(),
+      "mongol": mongol.trim(),
     };
     try {
       await pb.collection('words').create(body: body);
@@ -45,8 +45,8 @@ class WordRepo {
           .getFirstListItem('cyrillic="${word.cyrillic}"');
       final body = <String, dynamic>{
         "user": pb.authStore.record!.id,
-        "cyrillic": word.cyrillic,
-        "mongol": word.mongol,
+        "cyrillic": word.cyrillic.trim(),
+        "mongol": word.mongol.trim(),
       };
       await pb.collection('words').update(record.id, body: body);
       words[word.cyrillic] = word.mongol;

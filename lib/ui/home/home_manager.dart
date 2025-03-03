@@ -7,7 +7,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 class HomeManager {
   final addMongolNotifier = ValueNotifier<String>('');
-  void Function(String)? onWordAdded;
+  void Function(bool, String)? onWordAdded;
   final wordRepo = getIt<WordRepo>();
   final pb = getIt<PocketBase>();
   String convertedText = '';
@@ -33,9 +33,14 @@ class HomeManager {
     return converter.latinToMenksoft(latin);
   }
 
-  Future<void> login(String username, String password) async {
-    await pb.collection('users').authWithPassword(username, password);
-    userSettings.saveEmail(username);
+  Future<bool> login(String username, String password) async {
+    try {
+      await pb.collection('users').authWithPassword(username, password);
+      userSettings.saveEmail(username);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> logout() async {
@@ -49,9 +54,9 @@ class HomeManager {
     final success = await wordRepo.addWord(cyrillic, mongol);
     final message =
         success //
-            ? '$cyrillic амжилттай нэмэгдлээ'
+            ? 'амжилттай нэмэгдлээ'
             : 'Үг нэмэхэд алдаа гарлаа';
-    onWordAdded?.call(message);
+    onWordAdded?.call(success, message);
   }
 
   String prepareTextToCopy() {

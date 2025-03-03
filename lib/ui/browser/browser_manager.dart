@@ -12,11 +12,13 @@ class BrowserManager {
   final wordRepo = getIt<WordRepo>();
   final converter = getIt<Converter>();
   final pb = getIt<PocketBase>();
+  void Function(bool, String)? _onResult;
 
   bool get isLoggedIn => pb.authStore.isValid;
 
-  void init() {
+  void init(void Function(bool, String) onWordAdded) {
     listNotifier.value = wordRepo.words.keys.toList();
+    _onResult = onWordAdded;
   }
 
   String wordAtIndex(int i) {
@@ -36,6 +38,11 @@ class BrowserManager {
     if (success) {
       listNotifier.addItem(word.cyrillic);
     }
+    final message =
+        success //
+            ? 'амжилттай нэмэгдлээ'
+            : 'алдаа гарлаа';
+    _onResult?.call(success, message);
   }
 
   Future<void> updateWord(Word word) async {
@@ -43,6 +50,11 @@ class BrowserManager {
     if (success) {
       listNotifier.update();
     }
+    final message =
+        success //
+            ? 'амжилттай хадгаллаа'
+            : 'алдаа гарлаа';
+    _onResult?.call(success, message);
   }
 
   Future<void> deleteWord(String cyrillic) async {
@@ -50,6 +62,11 @@ class BrowserManager {
     if (success) {
       listNotifier.deleteItem(cyrillic);
     }
+    final message =
+        success //
+            ? 'амжилттай устгалаа'
+            : 'алдаа гарлаа';
+    _onResult?.call(success, message);
   }
 
   void filterWords(String query) {
@@ -63,7 +80,6 @@ class BrowserManager {
 
   Future<void> saveToCSV() async {
     final csv = wordRepo.toCSV();
-    print('csv: $csv');
     final timestamp = DateTime.now().toIso8601String();
     await FileSaver.instance.saveFile(
       name: 'mongol_$timestamp',
