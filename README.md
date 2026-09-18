@@ -1,5 +1,7 @@
 # Mongol Converter
 
+*The new version of this project is available at https://github.com/suragch/cyrillicconverter.*
+
 A Cyrillic to Mongolian converter built with Flutter. The backend is hosted with PocketBase.
 
 ## Updating the Flutter app
